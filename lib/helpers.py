@@ -68,28 +68,102 @@ def delete_department():
 # You'll implement the employee functions in the lab
 
 def list_employees():
-    pass
+    employees = Employee.get_all()
+    print("")
+    for emp in employees:
+        print(emp)
+    print("")
 
 
 def find_employee_by_name():
-    pass
+    print("")
+    target = input("Enter the employee's name: ")
+    if record := Employee.find_by_name(target):
+        print(f"\nEmployee '{target}' found:")
+        print(record)
+    else:
+        print(f"\nEmployee '{target}' not found")
+    print("")
 
 
 def find_employee_by_id():
-    pass
+    print("")
+    target = input("Enter the employee ID: ")
+    if record := Employee.find_by_id(target):
+        print(f"\nEmployee '{target}' found:")
+        print(record)
+    else:
+        print(f"\nEmployee '{target}' not found")
+    print("")
 
 
 def create_employee():
-    pass
+    print("")
+    emp_name = input("Enter the new employee's name: ")
+    emp_title = input("Enter the new employee's job title: ")
+    emp_deptid = int(input("Enter the new employee's department ID: "))
+    try:
+        new_emp = Employee.create(emp_name, emp_title, emp_deptid)
+        print(f"\nNew employee '{emp_name}' record created:")
+        print(new_emp)
+    except Exception as exc:
+        print(f"\nNew employee '{emp_name}' record not created:")
+        print(exc)
+    print("")
 
 
 def update_employee():
-    pass
+    print("")
+    
+    target = input("Enter the employee ID: ")
+    if record := Employee.find_by_id(target):
+        print(f"\nEmployee '{target}' found: ")
+        print(record)
+        try:
+            emp_name = input("\nEnter the employee's new name: ")
+            emp_title = input("Enter the employee's new job title: ")
+            emp_deptid = int(input("Enter the employee's new department ID: "))
+            record.name = emp_name
+            record.job_title = emp_title
+            record.department_id = emp_deptid
+            record.update()
+            
+            print(f"\nEmployee '{target}' record updated:")
+            print(record)
+        except Exception as exc:
+            print(f"\nEmployee '{target}' record not updated:")
+            print(exc)
+    else:
+        print(f"\nEmployee '{target}' not found")
+        
+    print("")
 
 
 def delete_employee():
-    pass
+    print("")
+    target = input("Enter the employee ID: ")
+    print("\nAttempting deletion:")
+    print(record := Employee.find_by_id(target))
+    if record:
+        try:
+            record.delete()
+            print(f"\nEmployee '{target}' expunged from database")
+        except Exception as exc:
+            print(f"\nEmployee '{target}' could not be expunged from database:")
+            print(exc)
+    else:
+        print(f"\nEmployee '{target}' not found")
+        
+    print("")
 
 
 def list_department_employees():
-    pass
+    print("")
+    dept_id = int(input("Enter the department's id: "))
+    if department := Department.find_by_id(dept_id):
+        print(department)
+        for emp in department.employees():
+            print(emp)
+    else:
+        print(f"\nDepartment '{dept_id}' not found")
+    print("")
